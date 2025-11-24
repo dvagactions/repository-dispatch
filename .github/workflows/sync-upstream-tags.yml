@@ -1,0 +1,23 @@
+name: Sync Upstream Tags
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch upstream tags
+        run: git fetch --tags upstream 
+
+      - name: Push tags to fork
+        run: git push origin --tags --force
