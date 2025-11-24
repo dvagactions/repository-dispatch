@@ -22,7 +22,7 @@ jobs:
 
       - name: Sync fork
         run: |
-          gh repo sync peter-evans/repository-dispatch
+          gh repo sync 
     
       - name: Fetch upstream tags
         run: git fetch --tags upstream 
