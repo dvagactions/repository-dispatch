@@ -22,7 +22,7 @@ jobs:
 
       - name: Sync fork
         run: |
-          gh repo sync 
+          gh repo sync --force
     
       - name: Fetch upstream tags
         run: git fetch --tags upstream 
