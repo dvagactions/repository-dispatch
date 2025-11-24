@@ -16,9 +16,9 @@ jobs:
       - name: Add upstream remote
         run: git remote add upstream "https://github.com/peter-evans/repository-dispatch.git"
 
-      - name: Sync fork
-        run: |
-          gh repo sync --force
+      # - name: Sync fork
+      #   run: |
+      #     gh repo sync --force
     
       - name: Fetch upstream tags
         run: git fetch --tags upstream 
