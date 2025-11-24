@@ -6,18 +6,40 @@ A GitHub action to create a repository dispatch event.
 
 ## Usage
 
-Dispatch an event to the current repository.
+### Dispatching an event to the current repository
+
+In the caller workflow file:
+
 ```yml
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          event-type: my-event
+jobs:
+  Dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+     steps:
+       - name: Repository Dispatch
+         uses: peter-evans/repository-dispatch@v4
+         with:
+           event-type: my-event
 ```
 
-Dispatch an event to a remote repository using a `repo` scoped [Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+In the callee workflow file:
+
+```yml
+name: MyWorkflow
+
+on:
+  repository_dispatch:
+    types: [my-event]
+```
+
+### Dispatching an event to a remote repository
+
+Use a `repo` scoped [Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+
 ```yml
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.PAT }}
           repository: username/my-repo
@@ -28,7 +50,7 @@ Dispatch an event to a remote repository using a `repo` scoped [Personal Access 
 
 | Name | Description | Default |
 | --- | --- | --- |
-| `token` | `GITHUB_TOKEN` (permissions `contents: write`) or a `repo` scoped [Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). See [token](#token) for further details. | `GITHUB_TOKEN` |
+| `token` | `GITHUB_TOKEN` or a `repo` scoped [Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). See [token](#token) for further details. | `GITHUB_TOKEN` |
 | `repository` | The full name of the repository to send the dispatch. | `github.repository` (current repository) |
 | `event-type` | (**required**) A custom webhook event name. | |
 | `client-payload` | JSON payload with extra information about the webhook event that your action or workflow may use. | `{}` |
@@ -51,7 +73,7 @@ Here is an example setting all of the input parameters.
 
 ```yml
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.PAT }}
           repository: username/my-repo
@@ -71,7 +93,7 @@ jobs:
   myEvent:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.client_payload.ref }}
       - run: echo ${{ github.event.client_payload.sha }}
@@ -94,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.PAT }}
           repository: ${{ matrix.repo }}
@@ -131,7 +153,7 @@ A multiline `client-payload` can be set directly in YAML, as in the following ex
 
 ```yml
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.PAT }}
           repository: username/my-repo
