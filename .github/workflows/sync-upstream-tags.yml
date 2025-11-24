@@ -12,13 +12,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          fetch-depth: 0
-    
+          
       - name: Add upstream remote
         run: git remote add upstream "https://github.com/peter-evans/repository-dispatch.git"
 
+      - name: Sync fork
+        run: |
+          gh repo sync --force
+    
       - name: Fetch upstream tags
         run: git fetch --tags upstream 
 
