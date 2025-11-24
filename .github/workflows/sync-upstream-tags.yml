@@ -15,7 +15,6 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
-          persist-credentials: false
     
       - name: Add upstream remote
         run: git remote add upstream "https://github.com/peter-evans/repository-dispatch.git"
